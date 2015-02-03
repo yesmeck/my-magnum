@@ -2,7 +2,7 @@
 
 var TravisAPISource = o.Class({
 	extend: JSONSource,
-	
+
 	url: 'https://api.travis-ci.org/repos',
 
 	getURL: function (users) {

@@ -26,7 +26,7 @@ var FormController = o.Class({
 	// private
 
 	_disableFieldsTabIndex: function () {
-		this.el(':input').attr('tabindex', '-1');	
+		this.el(':input').attr('tabindex', '-1');
 	},
 
 	_enableFieldsTabIndex: function () {
@@ -34,7 +34,7 @@ var FormController = o.Class({
 	},
 
 	_focus: function () {
-		this.el(':input:first').get(0).focus(); 
+		this.el(':input:first').get(0).focus();
 	},
 
 	_setStatus: function (msg) {
@@ -58,14 +58,14 @@ var FormUsersController = o.Class({
 		this.client = new LiteMQ.Client({name:'FormUsersController'});
 		this._addBusListeners();
 	},
-	
+
 	// private
 	_addBusListeners: function () {
 		var that = this;
 
 		this.client.sub('popup-window-load', function () {
 				that._addListeners();
-				that._disableFieldsTabIndex();	
+				that._disableFieldsTabIndex();
 			})
 			.sub('button-open-users-pressed', function () {
 				that.toggle();
@@ -78,7 +78,7 @@ var FormUsersController = o.Class({
 
 				setTimeout(function () {
 					that.close();
-				}, 1000);	
+				}, 1000);
 			})
 			.sub('checkbox-manage-checked', function () {
 				that._disableInputs();
@@ -87,22 +87,22 @@ var FormUsersController = o.Class({
 				that._enableInputs();
 			});
 	},
-	
+
 	_addListeners: function () {
 		var that = this;
 
 		this.el('form').on('submit', function (evt) {
-			var users;
+      var api_key = this.user.value
 
-			evt.preventDefault();
-
-			users = this.user.value.split(',');
-			users.reverse().forEach(function (user) {
+      MagnumAPI.profile(api_key, function(user) {
+        console.log(user)
 				Prefs.addUser(user);
-			});
+      })
 
 			that._lock();
 			that.client.pub('form-users-submitted');
+
+      evt.preventDefault();
 		});
 	},
 
@@ -111,11 +111,11 @@ var FormUsersController = o.Class({
 	},
 
 	_disableInputs: function () {
-		this.el(':input').attr('disabled', 'true');	
+		this.el(':input').attr('disabled', 'true');
 	},
 
 	_enableInputs: function () {
-		this.el(':input').removeAttr('disabled');	
+		this.el(':input').removeAttr('disabled');
 	},
 
 	_lock: function () {
@@ -142,13 +142,13 @@ var FormPrefsController = o.Class({
 	},
 
 	// private
-	
+
 	_addBusListeners: function () {
 		var that = this;
-		
+
 		this.client.sub('popup-window-load', function () {
 				that._addListeners();
-				that._disableFieldsTabIndex();		
+				that._disableFieldsTabIndex();
 				that._restoreData();
 			})
 			.sub('button-open-users-pressed', function () {
@@ -158,7 +158,7 @@ var FormPrefsController = o.Class({
 				that.toggle();
 			});
 	},
-	
+
 	_addListeners: function () {
 		var that = this;
 
@@ -180,7 +180,7 @@ var FormPrefsController = o.Class({
 
 	_restoreData: function () {
 		var prefs = Prefs.get();
-		
+
 		this.el(':input[name=interval]').val(prefs.intervalMin || 1);
 		this.el(':input[name=notifications]').attr('checked', prefs.notifications || false);
 	}

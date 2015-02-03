@@ -22,7 +22,7 @@
 	<script src="/vendor/jquery-ui-1.10.2.custom.min.js"></script>
 	<script src="/vendor/moment.min.js"></script>
 	<script src="/app/app.src.js"></script>
-	
+
 	<script src="/app/init/popup.src.js"></script>
 
 	<script src="/app/helper/utils.src.js"></script>
@@ -30,7 +30,8 @@
 	<script src="/app/model/prefs.src.js"></script>
 	<script src="/app/model/projs.src.js"></script>
 	<script src="/app/model/travis.src.js"></script>
-	
+	<script src="/app/model/magnum.src.js"></script>
+
 	<script src="/app/controller/list.src.js"></script>
 	<script src="/app/controller/form.src.js"></script>
 	<script src="/app/controller/header.src.js"></script>
@@ -67,12 +68,12 @@
 
 	<section id="form-user" class="form">
 		<form>
-			<label>user <input name="user" type="text" required></label>
+      <label>API key <input name="user" type="text" required></label>
 			<button type="submit">add</button>
 			<span class="status"></span>
 		</form>
 	</section>
-	
+
 	<section id="list">
 		<table>
 			<thead>

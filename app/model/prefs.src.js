@@ -7,32 +7,28 @@ var PrefsModel = o.Class({
 	addUser: function (user) {
 		var users = this.get('users');
 
-		users = users? users.split(','): [];
+		users = users || [];
 
-		if (users.indexOf(user)>-1) {
+		if (users.indexOf(user) > -1) {
 			return;
 		}
 
 		// Add to the front
-		users.unshift(user.trim());
+		users.unshift(user);
 
-		this.set('users', users.join(','));
+		this.set('users', users);
 	},
 
 	get: function (key) {
 		var prefs = this._super() || {};
-	 
+
 		return key? prefs[key]: prefs;
 	},
 
 	getUsers: function () {
 		var users = this.get('users');
-		
-		if (users) {
-			return users.split(',');
-		} else {
-			return [];
-		}
+
+    return [];
 	},
 
 	removeUser: function (user) {
@@ -41,13 +37,13 @@ var PrefsModel = o.Class({
 		users = users.filter(function (element) {
 			return (element !== user);
 		});
-	
+
 		this.set('users', users.join(','));
 	},
 
 	set: function (attrKey, attrValue) {
 		var prefs = this.get();
-		
+
 		prefs[attrKey] = attrValue;
 
 		this._super(prefs);

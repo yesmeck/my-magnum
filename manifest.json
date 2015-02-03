@@ -9,9 +9,9 @@
 		"alarms",
 		"notifications",
     "background",
-    "https://api.travis-ci.org/*"
+    "https://magnum-ci.com/api/v1/*"
   ],
-  
+
 	"web_accessible_resources": [
     "icon-app-48.png"
   ],
@@ -24,7 +24,7 @@
   },
 
 	"sandbox": {
-		"pages": ["html/templates.html"]	
+		"pages": ["html/templates.html"]
 	},
 
   "icons": {
