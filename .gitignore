@@ -2,3 +2,4 @@
 runner.html
 .grunt/
 build/
+node_modules/
