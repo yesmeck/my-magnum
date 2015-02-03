@@ -1,53 +1,53 @@
 /*globals DOMController */
 
 var AuthorController = o.Class({
-	extend: DOMController,
-	dom: 'section#author',
+  extend: DOMController,
+  dom: 'section#author',
 
-	boot: function () {
-		this._addListeners();
-	},
+  boot: function () {
+    this._addListeners();
+  },
 
-	init: function (opt) {
-		this._super(opt);
-		this.client = new LiteMQ.Client({name: 'AuthorController'});
+  init: function (opt) {
+    this._super(opt);
+    this.client = new LiteMQ.Client({name: 'AuthorController'});
 
-		this._addBusListeners();
-	},
+    this._addBusListeners();
+  },
 
-	// private
-	_addBusListeners: function () {
-		var that = this;
-		
-		this.client.sub('popup-window-load', function () {
-				that._addListeners();
-			})
-			.sub('link-author-clicked', function () {
-				that._show();	
-			});
-	},
+  // private
+  _addBusListeners: function () {
+    var that = this;
 
-	_addListeners: function () {
-		var that = this;
+    this.client.sub('popup-window-load', function () {
+      that._addListeners();
+    })
+    .sub('link-author-clicked', function () {
+      that._show();
+    });
+  },
 
-		this.el().on('click', function () {
-				that._hide();
-			})
-			.on('click', 'div#card', function (evt) {
-				evt.stopPropagation();
-			})
-			.on('click', 'button#close', function () {
-				that._hide();
-			});
-	},
+  _addListeners: function () {
+    var that = this;
 
-	_hide: function () {
-		this.el().css('visibility', 'hidden');
-	},
+    this.el().on('click', function () {
+      that._hide();
+    })
+    .on('click', 'div#card', function (evt) {
+      evt.stopPropagation();
+    })
+    .on('click', 'button#close', function () {
+      that._hide();
+    });
+  },
 
-	_show: function () {
-		this.el().css('visibility', 'visible');
-	} 
+  _hide: function () {
+    this.el().css('visibility', 'hidden');
+  },
+
+  _show: function () {
+    this.el().css('visibility', 'visible');
+  }
 });
 
 new AuthorController();

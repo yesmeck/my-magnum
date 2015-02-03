@@ -1,17 +1,17 @@
 describe("Analytics", function() {
-	beforeEach(function() {
-		LiteMQ.DefaultBus.clear();
-	});
-	
-	it("should add the google analytics on extension install", function() {
-		var
-			client = new LiteMQ.Client();
+  beforeEach(function() {
+    LiteMQ.DefaultBus.clear();
+  });
 
-		new AnalyticsController();
+  it("should add the google analytics on extension install", function() {
+    var
+    client = new LiteMQ.Client();
 
-		client.pub('extension-installed');
+    new AnalyticsController();
 
-		expect($('script[src$="ga.js"]').length).toBe(1);
-	});
+    client.pub('extension-installed');
+
+    expect($('script[src$="ga.js"]').length).toBe(1);
+  });
 });
 

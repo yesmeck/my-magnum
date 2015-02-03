@@ -1,217 +1,217 @@
 /*globals Controller, webkitNotifications */
 
 var NotificationController = o.Class({
-	extend: DOMController,
-	dom: 'section#notification',
+  extend: DOMController,
+  dom: 'section#notification',
 
-	getResult: function (type) {
-		var results = Status.get('results');
+  getResult: function (type) {
+    var results = Status.get('results');
 
-		if ($.isEmptyObject(results)) {
-			results = {passed: [], failed: []};
-		}
+    if ($.isEmptyObject(results)) {
+      results = {passed: [], failed: []};
+    }
 
-		if (type) {
-			return results[type];
-		}
+    if (type) {
+      return results[type];
+    }
 
-		return results;
-	},
+    return results;
+  },
 
-	init: function () {
-		this.client = new LiteMQ.Client({name: 'NotificationController'});
-		this._addBusListeners();
-	},
+  init: function () {
+    this.client = new LiteMQ.Client({name: 'NotificationController'});
+    this._addBusListeners();
+  },
 
-	// Render html on notification.html
-	render: function (type) {
-		var msg = ' has been fixed',
-			slugs = this.getResult(type);
-		
-		if (type === 'failed') {
-			msg = ' has failed';
-		}
+  // Render html on notification.html
+  render: function (type) {
+    var msg = ' has been fixed',
+    slugs = this.getResult(type);
 
-		this._addStatus(type);
-		this._addTitle(slugs.length+' build'+(slugs.length>1?'s':'')+msg);
-		this._addList(slugs);
-	},
-	
-	update: function () {
-		var
-			projs = Projs.get(),
-			prefs = Prefs.get();
+    if (type === 'failed') {
+      msg = ' has failed';
+    }
 
-		if (prefs.notifications) {
-			this._notify(projs);
-		}
-	},
-  
-	// private
-	
-	_addBusListeners: function () {
-		var that = this;
+    this._addStatus(type);
+    this._addTitle(slugs.length+' build'+(slugs.length>1?'s':'')+msg);
+    this._addList(slugs);
+  },
 
-		this.client.sub('request-done', function () {
-				that.update();
-				console.log('Notification updated!');
-			})
-			.sub('notification-document-ready', function (msg) {
-				var type = msg.body;
-				that.render(type);
-			});
-	},
+  update: function () {
+    var
+    projs = Projs.get(),
+    prefs = Prefs.get();
 
-	_addList: function (slugs) {
-		var lis = slugs.map(function (slug) {
-				return '<li>'+slug+'</li>';
-			}).join('');
+    if (prefs.notifications) {
+      this._notify(projs);
+    }
+  },
 
-		this.el('ul').html(lis);
-	},
+  // private
 
-	_addStatus: function (type) {
-		this.el('span.status').addClass(type);
-	},
+  _addBusListeners: function () {
+    var that = this;
 
-	_addTitle: function (msg) {
-		this.el('h1').append(msg);
-	},
+    this.client.sub('request-done', function () {
+      that.update();
+      console.log('Notification updated!');
+    })
+    .sub('notification-document-ready', function (msg) {
+      var type = msg.body;
+      that.render(type);
+    });
+  },
 
-	_closeChromeNotification: function (notification) {
-		notification.close();
-	},
-	
-	_compare: function (stored, fetched) {
-		var storedStatus, fetchedStatus;
-		var result = {
-			passed: [],
-			failed: []
-		};
+  _addList: function (slugs) {
+    var lis = slugs.map(function (slug) {
+      return '<li>'+slug+'</li>';
+    }).join('');
 
-		for (var slug in fetched) {
-			storedStatus = stored[slug];
-			fetchedStatus = fetched[slug];
+    this.el('ul').html(lis);
+  },
 
-			if (storedStatus === 'passed' && fetchedStatus === 'failed') {
-				result.failed.push(slug);
-				continue;
-			}
+  _addStatus: function (type) {
+    this.el('span.status').addClass(type);
+  },
 
-			if (storedStatus === 'failed' && fetchedStatus === 'passed') {
-				result.passed.push(slug);
-				continue;
-			}
-		}
+  _addTitle: function (msg) {
+    this.el('h1').append(msg);
+  },
 
-		return result;
-	},
+  _closeChromeNotification: function (notification) {
+    notification.close();
+  },
 
-	_createChromeNotification: function (type) {
-		var file = '../html/notification.html?'+type;
-		return webkitNotifications.createHTMLNotification(file);	
-	},
+  _compare: function (stored, fetched) {
+    var storedStatus, fetchedStatus;
+    var result = {
+      passed: [],
+      failed: []
+    };
 
-	// Creates a hash-table for tracking projects status
-	_format: function (projs) {
-		var formatted = {};
+    for (var slug in fetched) {
+      storedStatus = stored[slug];
+      fetchedStatus = fetched[slug];
 
-		projs.forEach(function (proj) {
-			var slug = proj.user+'/'+proj.name;
+      if (storedStatus === 'passed' && fetchedStatus === 'failed') {
+        result.failed.push(slug);
+        continue;
+      }
 
-			formatted[slug] = this._getStatus(proj);
-		}, this);
+      if (storedStatus === 'failed' && fetchedStatus === 'passed') {
+        result.passed.push(slug);
+        continue;
+      }
+    }
 
-		return formatted;
-	},
+    return result;
+  },
 
-	_getStatus: function (proj) {
-		if (proj.status==='errored') {
-			return 'failed';
-		}
+  _createChromeNotification: function (type) {
+    var file = '../html/notification.html?'+type;
+    return webkitNotifications.createHTMLNotification(file);
+  },
 
-		return proj.status;
-	},
+  // Creates a hash-table for tracking projects status
+  _format: function (projs) {
+    var formatted = {};
 
-	_getStored: function () {
-		return Status.get('stored');
-	},
+    projs.forEach(function (proj) {
+      var slug = proj.user+'/'+proj.name;
 
-	_hasFailed: function () {
-		return this.getResult('failed').length > 0;
-	},
+      formatted[slug] = this._getStatus(proj);
+    }, this);
 
-	_hasPassed: function () {
-		return this.getResult('passed').length > 0;
-	},
+    return formatted;
+  },
 
-	_notify: function (projs) {
-		var results,
-			stored = this._getStored(),
-			fetched = this._format(projs);
+  _getStatus: function (proj) {
+    if (proj.status==='errored') {
+      return 'failed';
+    }
 
-		if (!stored) {
-			this._store(stored = fetched);
-		}
+    return proj.status;
+  },
 
-		results = this._compare(stored, fetched);
-		
-		// Update stored
-		this._storeResults(results);
-		this._store(fetched);
+  _getStored: function () {
+    return Status.get('stored');
+  },
 
-		if (this._hasFailed()) {
-			this._showChromeNotification('failed');
-		}
+  _hasFailed: function () {
+    return this.getResult('failed').length > 0;
+  },
 
-		if (this._hasPassed()) {
-			this._showChromeNotification('passed');
-		}
-	},
+  _hasPassed: function () {
+    return this.getResult('passed').length > 0;
+  },
 
-	_openChromeNotification: function (type) {
-		var
-			that = this,
-			notification = this._createChromeNotification(type);
+  _notify: function (projs) {
+    var results,
+    stored = this._getStored(),
+    fetched = this._format(projs);
 
-		notification.show();
+    if (!stored) {
+      this._store(stored = fetched);
+    }
 
-		setTimeout(function () {
-			that._closeChromeNotification(notification);
-		}, 3000);
-	},
+    results = this._compare(stored, fetched);
 
-	_showChromeNotification: function (type) {
-		var
-			that = this,
-			notification = this._createChromeNotification(type);
-		
-		this._openChromeNotification(notification);
+    // Update stored
+    this._storeResults(results);
+    this._store(fetched);
 
-		setTimeout(function () {
-			that._closeChromeNotification(notification);
-		}, 3000);
-	},
+    if (this._hasFailed()) {
+      this._showChromeNotification('failed');
+    }
 
-	_store: function (fetched) {
-		var tmp = {},
-			stored = this._getStored() || {};
+    if (this._hasPassed()) {
+      this._showChromeNotification('passed');
+    }
+  },
 
-		for (var slug in fetched) {
-			if (fetched[slug]==='started') {
-				// Retain state for future comparisons
-				tmp[slug] = stored[slug];
-			} else {
-				tmp[slug] = fetched[slug];
-			}
-		}
+  _openChromeNotification: function (type) {
+    var
+    that = this,
+    notification = this._createChromeNotification(type);
 
-		Status.set('stored', tmp);
-	},
+    notification.show();
 
-	_storeResults: function (results) {
-		Status.set('results', results);
-	}
+    setTimeout(function () {
+      that._closeChromeNotification(notification);
+    }, 3000);
+  },
+
+  _showChromeNotification: function (type) {
+    var
+    that = this,
+    notification = this._createChromeNotification(type);
+
+    this._openChromeNotification(notification);
+
+    setTimeout(function () {
+      that._closeChromeNotification(notification);
+    }, 3000);
+  },
+
+  _store: function (fetched) {
+    var tmp = {},
+    stored = this._getStored() || {};
+
+    for (var slug in fetched) {
+      if (fetched[slug]==='started') {
+        // Retain state for future comparisons
+        tmp[slug] = stored[slug];
+      } else {
+        tmp[slug] = fetched[slug];
+      }
+    }
+
+    Status.set('stored', tmp);
+  },
+
+  _storeResults: function (results) {
+    Status.set('results', results);
+  }
 });
 
 new NotificationController();

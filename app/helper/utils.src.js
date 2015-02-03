@@ -1,29 +1,29 @@
 function formatSecs(secs) {
-	var stamp = '';
+  var stamp = '';
 
-	if (typeof secs !== 'number') {
-		return '';
-	}
+  if (typeof secs !== 'number') {
+    return '';
+  }
 
-	var hours = Math.floor(secs / (60 * 60));
- 
-	var divisor_for_minutes = secs % (60 * 60);
-	var mins = Math.floor(divisor_for_minutes / 60);
+  var hours = Math.floor(secs / (60 * 60));
 
-	var divisor_for_seconds = divisor_for_minutes % 60;
-	
-	secs = Math.ceil(divisor_for_seconds);
+  var divisor_for_minutes = secs % (60 * 60);
+  var mins = Math.floor(divisor_for_minutes / 60);
+
+  var divisor_for_seconds = divisor_for_minutes % 60;
+
+  secs = Math.ceil(divisor_for_seconds);
 
 
-	if (hours>0) {
-		stamp += hours+'h ';
-	}
+  if (hours>0) {
+    stamp += hours+'h ';
+  }
 
-	if (mins>0 || hours>0) {
-		stamp += mins+'min ';
-	}
+  if (mins>0 || hours>0) {
+    stamp += mins+'min ';
+  }
 
-	stamp += secs+'s';
+  stamp += secs+'s';
 
-	return stamp;
+  return stamp;
 }

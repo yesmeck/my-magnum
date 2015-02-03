@@ -1,60 +1,60 @@
 /*globals badgeController */
 
 describe("Badge Controller", function() {
-	beforeEach(function() {
-		Projs.clear();
+  beforeEach(function() {
+    Projs.clear();
 
-		spyOn(BadgeController.prototype, '_setChromeBadge');
-	});
-	
-	describe("no projects", function() {
-		it("should remove badge", function() {
-			var Badge = new BadgeController();
+    spyOn(BadgeController.prototype, '_setChromeBadge');
+  });
 
-			Projs.clear();
+  describe("no projects", function() {
+    it("should remove badge", function() {
+      var Badge = new BadgeController();
 
-			Badge.update();
+      Projs.clear();
 
-			expect(Badge._setChromeBadge).toHaveBeenCalledWith('');
-		});
-	});
+      Badge.update();
 
-	describe("ok projects", function() {
-		it("should have blank text with green background", function() {
-			var Badge = new BadgeController();
+      expect(Badge._setChromeBadge).toHaveBeenCalledWith('');
+    });
+  });
 
-			Projs.set([{status: 'passed'}, {status: 'passed'}]);
+  describe("ok projects", function() {
+    it("should have blank text with green background", function() {
+      var Badge = new BadgeController();
 
-			Badge.update();
+      Projs.set([{status: 'passed'}, {status: 'passed'}]);
 
-			expect(Badge._setChromeBadge).toHaveBeenCalledWith(' ', 'green');
-		});
-	});
+      Badge.update();
 
-	describe("failing projects", function() {
-		it("should show text 1 in red", function() {
-			var Badge = new BadgeController();
+      expect(Badge._setChromeBadge).toHaveBeenCalledWith(' ', 'green');
+    });
+  });
 
-			Projs.set([{status: 'failed'}, {status: 'passed'}]);
+  describe("failing projects", function() {
+    it("should show text 1 in red", function() {
+      var Badge = new BadgeController();
 
-			Badge.update();
+      Projs.set([{status: 'failed'}, {status: 'passed'}]);
 
-			expect(Badge._setChromeBadge).toHaveBeenCalledWith('1', 'red');
-		});
-	});
+      Badge.update();
 
-	describe("running projects", function() {
-		it("should not modify text", function() {
-			var Badge = new BadgeController();
+      expect(Badge._setChromeBadge).toHaveBeenCalledWith('1', 'red');
+    });
+  });
 
-			Projs.set([{status: 'started'}, {status: 'passed'}]);
+  describe("running projects", function() {
+    it("should not modify text", function() {
+      var Badge = new BadgeController();
 
-			Badge._setChromeBadge.reset();
+      Projs.set([{status: 'started'}, {status: 'passed'}]);
 
-			Badge.update();
+      Badge._setChromeBadge.reset();
 
-			expect(Badge._setChromeBadge).not.toHaveBeenCalled();
-		});
-	});
+      Badge.update();
+
+      expect(Badge._setChromeBadge).not.toHaveBeenCalled();
+    });
+  });
 });
 

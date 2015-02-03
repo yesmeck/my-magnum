@@ -1,107 +1,107 @@
 /*globals Service, TravisAPI */
 
 var UpdaterService = o.Class({
-	extend: Service,
+  extend: Service,
 
-	exec: function (callback) {
-		var that = this,
-			users = Prefs.getUsers();
+  exec: function (callback) {
+    var that = this,
+    users = Prefs.getUsers();
 
-		TravisAPI.get(users, function (projs) {
-			projs = Projs.convertAll(projs);
+    TravisAPI.get(users, function (projs) {
+      projs = Projs.convertAll(projs);
 
-			users.forEach(function (user) {
-				if (!projs[user]) {
-					projs[user] = [];
-				}
-			});
+      users.forEach(function (user) {
+        if (!projs[user]) {
+          projs[user] = [];
+        }
+      });
 
-			Projs.set(projs);
+      Projs.set(projs);
 
-			console.log('Request done!');
+      console.log('Request done!');
 
-			that.client.pub('request-done');
+      that.client.pub('request-done');
 
-			if (callback) {
-				callback(projs);
-			}
-		});
-	},
+      if (callback) {
+        callback(projs);
+      }
+    });
+  },
 
-	init: function () {
-		this.client = new LiteMQ.Client();
-		this._addBusListeners();
-	},
+  init: function () {
+    this.client = new LiteMQ.Client();
+    this._addBusListeners();
+  },
 
-	restart: function () {
-		var that = this;
+  restart: function () {
+    var that = this;
 
-		this.stop();
+    this.stop();
 
-		// Do a request right away!
-		this.exec(function () {
-			// Then begin the polling again
-			that.start();
-		});
-	},
+    // Do a request right away!
+    this.exec(function () {
+      // Then begin the polling again
+      that.start();
+    });
+  },
 
-	start: function () {
-		var
-			users = Prefs.getUsers(),
-			interval = parseInt(Prefs.get('intervalMin'), 10) || 1;
+  start: function () {
+    var
+    users = Prefs.getUsers(),
+    interval = parseInt(Prefs.get('intervalMin'), 10) || 1;
 
-		if (users.length) {
-			this._createAlarm(interval);
-		}
-	},
+    if (users.length) {
+      this._createAlarm(interval);
+    }
+  },
 
-	stop: function () {
-		this._clearAlarm();
-	},
+  stop: function () {
+    this._clearAlarm();
+  },
 
-	// private
-	
-	_addBusListeners: function () {
-		var that = this;
-		
-		this.client.sub('background-document-ready', function () {
-				that._addAlarmListeners();
-				that.restart();
-			})
-			.sub('update-requested', function () {
-				console.log(new Date());
-				console.log('Requesting...');
+  // private
 
-				that.exec();
-			})
-			.sub(['form-prefs-submitted', 'form-users-submitted'], function () {
-				that.restart();
-				this.pub('form-submit-done');
-			});
-	},
+  _addBusListeners: function () {
+    var that = this;
 
-	_addAlarmListeners: function () {
-		var that = this;
+    this.client.sub('background-document-ready', function () {
+      that._addAlarmListeners();
+      that.restart();
+    })
+    .sub('update-requested', function () {
+      console.log(new Date());
+      console.log('Requesting...');
 
-		chrome.alarms.onAlarm.addListener(function (alarm) {
-			if (alarm && alarm.name === 'travisapi') {
-				console.log(new Date());
-				console.log('Requesting...');
+      that.exec();
+    })
+    .sub(['form-prefs-submitted', 'form-users-submitted'], function () {
+      that.restart();
+      this.pub('form-submit-done');
+    });
+  },
 
-				that.exec();
-			}
-		});	
-	},
+  _addAlarmListeners: function () {
+    var that = this;
 
-	_clearAlarm: function () {
-		console.log('Updater stopped.');
-		chrome.alarms.clear('travisapi');
-	},
+    chrome.alarms.onAlarm.addListener(function (alarm) {
+      if (alarm && alarm.name === 'travisapi') {
+        console.log(new Date());
+        console.log('Requesting...');
 
-	_createAlarm: function (interval) {
-		console.log('Updater started. Polling interval: '+interval+'min');
-		chrome.alarms.create('travisapi', {periodInMinutes:interval});
-	}
+        that.exec();
+      }
+    });
+  },
+
+  _clearAlarm: function () {
+    console.log('Updater stopped.');
+    chrome.alarms.clear('travisapi');
+  },
+
+  _createAlarm: function (interval) {
+    console.log('Updater started. Polling interval: '+interval+'min');
+    chrome.alarms.create('travisapi', {periodInMinutes:interval});
+  }
 });
 
 new UpdaterService();

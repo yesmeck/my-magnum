@@ -1,114 +1,114 @@
 /*globals FormController, FormUsersController, FormPrefsController */
 
 describe("Form Controller", function () {
-	it("should open/close", function () {
-		var
-			element = $('<section><form><input type="hidden" name="user" value="John"></form></section>'),
-			form = new FormController({element:element});
+  it("should open/close", function () {
+    var
+    element = $('<section><form><input type="hidden" name="user" value="John"></form></section>'),
+    form = new FormController({element:element});
 
-		form.open();
+    form.open();
 
-		expect(form.el('form').is('.opened')).toBe(true);
-		
-		form.close();
+    expect(form.el('form').is('.opened')).toBe(true);
 
-		expect(form.el('form').is('.opened')).toBe(false);
-	});
-	
-	it("should toggle", function () {
-		var
-			element = $('<section><form><input type="hidden" name="user" value="John"></form></section>'),
-			form = new FormController({element:element});
+    form.close();
 
-		form.toggle();
+    expect(form.el('form').is('.opened')).toBe(false);
+  });
 
-		expect(form.el('form').is('.opened')).toBe(true);
-		
-		form.toggle();
+  it("should toggle", function () {
+    var
+    element = $('<section><form><input type="hidden" name="user" value="John"></form></section>'),
+    form = new FormController({element:element});
 
-		expect(form.el('form').is('.opened')).toBe(false);
-	});
+    form.toggle();
+
+    expect(form.el('form').is('.opened')).toBe(true);
+
+    form.toggle();
+
+    expect(form.el('form').is('.opened')).toBe(false);
+  });
 });
 
 
 describe("Form User Controller", function () {
-	beforeEach(function () {
-		spyOn($, 'getJSON');
-	});
-	
-	afterEach(function () {
-		Prefs.clear();
-	});
+  beforeEach(function () {
+    spyOn($, 'getJSON');
+  });
 
-	describe("on submit", function () {
-		it("should store user", function () {
-			var
-				element = $('<section><form><input type="hidden" name="user" value="john, bill, jack"></form></section>'),
-				form = new FormUsersController({element:element});
+  afterEach(function () {
+    Prefs.clear();
+  });
 
-			Prefs.addUser('john');
+  describe("on submit", function () {
+    it("should store user", function () {
+      var
+      element = $('<section><form><input type="hidden" name="user" value="john, bill, jack"></form></section>'),
+      form = new FormUsersController({element:element});
 
-			form._addListeners();
-			form.el('form').submit();
+      Prefs.addUser('john');
 
-			expect(Prefs.get('users')).toBe('bill,jack,john');
-		});
+      form._addListeners();
+      form.el('form').submit();
 
-		it("should publish", function () {
-			var
-				element = $('<section><form><input type="hidden" name="user" value="John"></form></section>'),
-				form = new FormUsersController({element:element}),
-				client = new LiteMQ.Client();
-			
-			client.sub('form-users-submitted', function () {
-				expect(true).toBe(true);
-			});
+      expect(Prefs.get('users')).toBe('bill,jack,john');
+    });
 
-			form._addListeners();
-			form.el('form').submit();
-		});
-	});
+    it("should publish", function () {
+      var
+      element = $('<section><form><input type="hidden" name="user" value="John"></form></section>'),
+      form = new FormUsersController({element:element}),
+      client = new LiteMQ.Client();
+
+      client.sub('form-users-submitted', function () {
+        expect(true).toBe(true);
+      });
+
+      form._addListeners();
+      form.el('form').submit();
+    });
+  });
 });
 
 
 describe("Form Prefs Controller", function () {
-	beforeEach(function () {
-		spyOn($, 'getJSON');
-	});
-	
-	afterEach(function () {
-		Prefs.clear();
-	});
+  beforeEach(function () {
+    spyOn($, 'getJSON');
+  });
 
-	describe("on submit", function () {
-		it("should store prefs", function () {
-			var
-				element = $('<section><form><input type="hidden" name="interval"><input type="checkbox" name="notifications"></form></section>'),
-				form = new FormPrefsController({element:element});
+  afterEach(function () {
+    Prefs.clear();
+  });
 
-			form._addListeners();
-			form.el('form')
-				.find(':input[name=interval]').val(50).end()
-				.find(':input[name=notifications]').attr('checked', true).end()
-				.submit();
+  describe("on submit", function () {
+    it("should store prefs", function () {
+      var
+      element = $('<section><form><input type="hidden" name="interval"><input type="checkbox" name="notifications"></form></section>'),
+      form = new FormPrefsController({element:element});
 
-			expect(Prefs.get('intervalMin')).toBe('50');
-			expect(Prefs.get('notifications')).toBe(true);
-		});
+      form._addListeners();
+      form.el('form')
+      .find(':input[name=interval]').val(50).end()
+      .find(':input[name=notifications]').attr('checked', true).end()
+      .submit();
 
-		it("should publish", function () {
-			var
-				element = $('<section><form><input type="hidden" name="interval"><input type="checkbox" name="notifications"></form></section>'),
-				form = new FormPrefsController({element:element}),
-				client = new LiteMQ.Client();
-			
-			client.sub('form-prefs-submitted', function () {
-				expect(true).toBe(true);
-			});
+      expect(Prefs.get('intervalMin')).toBe('50');
+      expect(Prefs.get('notifications')).toBe(true);
+    });
 
-			form._addListeners();
-			form.el('form').submit();
-		});
-	});
+    it("should publish", function () {
+      var
+      element = $('<section><form><input type="hidden" name="interval"><input type="checkbox" name="notifications"></form></section>'),
+      form = new FormPrefsController({element:element}),
+      client = new LiteMQ.Client();
+
+      client.sub('form-prefs-submitted', function () {
+        expect(true).toBe(true);
+      });
+
+      form._addListeners();
+      form.el('form').submit();
+    });
+  });
 });
 

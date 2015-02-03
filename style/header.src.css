@@ -5,42 +5,42 @@ header#main-header {
 }
 
 header#main-header a {
-    display:inline-block;
+  display:inline-block;
 }
 
 
 header#main-header a#logo {
-    margin:9px 15px;
+  margin:9px 15px;
 }
 
 header#main-header div#bar {
-    position:absolute;
-    top:16px;
-    right:20px;
-    color:#ddd;
+  position:absolute;
+  top:16px;
+  right:20px;
+  color:#ddd;
 }
 
 header#main-header div#bar button {
-    margin:0 0 0 3px;
-    padding:0;
-    background:none;
-    border:none;
-    cursor:pointer;
-    vertical-align:middle;
+  margin:0 0 0 3px;
+  padding:0;
+  background:none;
+  border:none;
+  cursor:pointer;
+  vertical-align:middle;
 }
 
 header#main-header div#bar button img {
-    margin:0;
-    width:18px;
-    font-size:13px;
+  margin:0;
+  width:18px;
+  font-size:13px;
 }
 
 
 header#main-header div#bar span#user:after {
-    content: " |";
+  content: " |";
 }
 
 header#main-header div#bar span#user:empty:after {
-    content: " ";
+  content: " ";
 }
 

@@ -6,65 +6,65 @@
 <script src="/app/helper/handlebars.src.js"></script>
 
 <script id="users" type="text/x-handlebars-template">
-	{{#each users}}
-	<li user="{{user}}">
-		<table>
-			<tr>
-				<th colspan="5">
-					{{user}}
-					<img class="user-grip" src="/imgs/user-grip.png">
-					<span class="user-removal">
-						<button class="remove" title="remove user"></button>
-						{{{include "#confirm-dialog" this}}}
-					</span>
-				</th>
-			</tr>
+  {{#each users}}
+  <li user="{{user}}">
+    <table>
+      <tr>
+        <th colspan="5">
+          {{user}}
+          <img class="user-grip" src="/imgs/user-grip.png">
+          <span class="user-removal">
+            <button class="remove" title="remove user"></button>
+            {{{include "#confirm-dialog" this}}}
+          </span>
+        </th>
+      </tr>
 
-			{{#each projs}}
-				{{{include "#projects" this}}}
-			{{else}}
-				{{{include "#no-projects"}}}
-			{{/each}}
-		</table>
-	</li>
-	{{else}}
-		{{{include "#no-users"}}}
-	{{/each}}
+      {{#each projs}}
+        {{{include "#projects" this}}}
+      {{else}}
+        {{{include "#no-projects"}}}
+      {{/each}}
+    </table>
+  </li>
+  {{else}}
+    {{{include "#no-users"}}}
+  {{/each}}
 </script>
 
 <script id="no-users" type="text/x-handlebars-template">
-	<li>
-		<table>
-			<tr>
-				<td class="message" colspan="5">
-					<div id="no-projects">No users has been added until now.</div>
-				</td>
-			</tr>
-		</table>
-	</li>
+  <li>
+    <table>
+      <tr>
+        <td class="message" colspan="5">
+          <div id="no-projects">No users has been added until now.</div>
+        </td>
+      </tr>
+    </table>
+  </li>
 </script>
 
 <script id="confirm-dialog" type="text/x-handlebars-template">
-	<span class="confirm">
-		are you sure?
-		<span class="option yes">yes</span>
-		<span class="option no">no</span>
-	</span>
+  <span class="confirm">
+    are you sure?
+    <span class="option yes">yes</span>
+    <span class="option no">no</span>
+  </span>
 </script>
 
 <script id="projects" type="text/x-handlebars-template">
-	<tr href="{{{urlTo user name}}}" class="{{status}}">
-		<td class="col-name"><span tabindex="0">{{name}}</span></td>
-		<td class="col-build">#{{build}}</td>
-		<td class="col-duration">{{{formatSecs duration}}}</td>
-		<td class="col-finishedAt">{{{moment finishedAt}}}</td>
-	</tr>
+  <tr href="{{{urlTo user name}}}" class="{{status}}">
+    <td class="col-name"><span tabindex="0">{{name}}</span></td>
+    <td class="col-build">#{{build}}</td>
+    <td class="col-duration">{{{formatSecs duration}}}</td>
+    <td class="col-finishedAt">{{{moment finishedAt}}}</td>
+  </tr>
 </script>
 
 <script id="no-projects" type="text/x-handlebars-template">
-	<tr>
-		<td class="message" colspan="5"><em>no projects found.</em></td>
-	</tr>
+  <tr>
+    <td class="message" colspan="5"><em>no projects found.</em></td>
+  </tr>
 </script>
 
 
@@ -73,8 +73,8 @@ var source = $("#users").html();
 var template = Handlebars.compile(source);
 
 window.addEventListener('message', function (evt) {
-	evt.source.postMessage({
-		html: template({users:evt.data.context})
-	}, evt.origin);
+  evt.source.postMessage({
+    html: template({users:evt.data.context})
+  }, evt.origin);
 });
 </script>

@@ -1,68 +1,68 @@
 section#list {
-	margin:10px 0 0;
+  margin:10px 0 0;
 }
 
 section#list button.remove {
-	margin:0;
-	padding:0;
-	width:14px;
-	height:15px;
-	background:transparent url(/imgs/icon-remove.png) no-repeat 0 0;
-	border:none;
-	float:right;
-	cursor:pointer;
+  margin:0;
+  padding:0;
+  width:14px;
+  height:15px;
+  background:transparent url(/imgs/icon-remove.png) no-repeat 0 0;
+  border:none;
+  float:right;
+  cursor:pointer;
 }
 
 section#list button.remove:hover {
-	background-position:-14px 0;
+  background-position:-14px 0;
 }
 
 section#list div#overlay {
-	position:absolute;
-	display:none;
-	top:0;
-	left:0;
-	width:100%;
-	height:100%;
-	background-color:#fff;
-	opacity:.5;
-	z-index:2;
+  position:absolute;
+  display:none;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background-color:#fff;
+  opacity:.5;
+  z-index:2;
 }
 
 section#list span.confirm {
-	width:0;
-	height:15px;
-	margin-right:5px;
-	font-weight:normal;
-	float:right;
-	overflow:hidden;
-	white-space:nowrap;
-	-webkit-transition:width .3s;
+  width:0;
+  height:15px;
+  margin-right:5px;
+  font-weight:normal;
+  float:right;
+  overflow:hidden;
+  white-space:nowrap;
+  -webkit-transition:width .3s;
 }
 
 section#list span.confirm.visible {
-	width:125px;
+  width:125px;
 }
 
 section#list span.option {
-	margin-left:4px;
-	border-bottom:1px dotted #ccc;
-	cursor:pointer;
+  margin-left:4px;
+  border-bottom:1px dotted #ccc;
+  cursor:pointer;
 }
 
 section#list span.user-removal {
-	display:none;
+  display:none;
 }
 
 section#list img.user-grip {
-	position:absolute;
-	display:none;
-	top:50%;
-	left:50%;
-	margin-top:-6px;
-	margin-left:-58px;
-	cursor: -webkit-grab;
-	opacity:0;
+  position:absolute;
+  display:none;
+  top:50%;
+  left:50%;
+  margin-top:-6px;
+  margin-left:-58px;
+  cursor: -webkit-grab;
+  opacity:0;
 }
 
 section#list table {
@@ -70,9 +70,9 @@ section#list table {
 }
 
 section#list th {
-	position:relative;
+  position:relative;
   padding-right:15px;
-	height:20px;
+  height:20px;
   text-align:left;
 }
 
@@ -82,7 +82,7 @@ section#list td {
 }
 
 section#list td div#no-projects {
-	margin-right:15px;
+  margin-right:15px;
   padding:40px 0;
   color:#999;
   text-align:center;
@@ -91,8 +91,8 @@ section#list td div#no-projects {
 }
 
 section#list td.message {
-	background-color:#fff;
-	cursor:default;
+  background-color:#fff;
+  cursor:default;
 }
 
 section#list td:first-child {
@@ -100,8 +100,8 @@ section#list td:first-child {
 }
 
 section#list tr span:before {
-	margin-right: 5px;
-	vertical-align:center;
+  margin-right: 5px;
+  vertical-align:center;
 }
 
 section#list tr.passed span:before {
@@ -121,30 +121,30 @@ section#list tr.started span:before {
 }
 
 section#list thead tr {
-	border-bottom:1px solid #999;
+  border-bottom:1px solid #999;
 }
 
 section#list ul {
-	max-height:485px;
-	overflow-x:hidden;
+  max-height:485px;
+  overflow-x:hidden;
 }
 
 section#list ul li {
-	overflow:hidden;
+  overflow:hidden;
 }
 
 section#list ul li.ui-state-highlight {
-	margin:3px;
-	height:20px;
-	border:3px dashed #ccc;
-	border-radius:3px;
+  margin:3px;
+  height:20px;
+  border:3px dashed #ccc;
+  border-radius:3px;
 }
 
 section#list ul th {
-	padding:5px 15px;
-	color:#fff;
-	background-color:#666;
-	cursor:default;
+  padding:5px 15px;
+  color:#fff;
+  background-color:#666;
+  cursor:default;
 }
 
 section#list ul tr {
@@ -160,7 +160,7 @@ section#list ul tr:nth-child(odd) {
 }
 
 section#list ul tr:hover {
-	background-color:#fdf2d6;
+  background-color:#fdf2d6;
 }
 
 section#list ul tr.failed {
@@ -172,13 +172,13 @@ section#list ul tr.failed:hover {
 }
 
 section#list .col-build {
-	width:60px;
+  width:60px;
 }
 
 section#list .col-duration {
-	width:80px;
+  width:80px;
 }
 
 section#list .col-finishedAt {
-	width:120px;
+  width:120px;
 }

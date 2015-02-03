@@ -1,41 +1,41 @@
 * {
-	margin:0;
-	padding:0;
+  margin:0;
+  padding:0;
 }
 
 body {
-	padding-left:50px;
-	min-height:40px;
-	color:#666;
-	font:12px Arial, Helvetica, Freesans, sans-serif;
+  padding-left:50px;
+  min-height:40px;
+  color:#666;
+  font:12px Arial, Helvetica, Freesans, sans-serif;
 }
 
 h1 {
-	margin:10px 0 2px;
-	font-size:14px;
-	letter-spacing:-1px;
+  margin:10px 0 2px;
+  font-size:14px;
+  letter-spacing:-1px;
 }
 
 span.status {
-	position:absolute;
-	display:inline-block;
-	top:5px;
-	left:5px;
-	width:40px;
-	height:40px;
-	background:transparent url(/imgs/icons-notification.png) no-repeat 0 0;
-	float:left;
+  position:absolute;
+  display:inline-block;
+  top:5px;
+  left:5px;
+  width:40px;
+  height:40px;
+  background:transparent url(/imgs/icons-notification.png) no-repeat 0 0;
+  float:left;
 }
 
 span.status.failed {
-	background-position:0 0;
+  background-position:0 0;
 }
 
 span.status.passed {
-	background-position:-40px 0;
+  background-position:-40px 0;
 }
 
 ul {
-	margin-left:16px;
-	margin-bottom:5px;
+  margin-left:16px;
+  margin-bottom:5px;
 }

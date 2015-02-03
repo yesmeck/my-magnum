@@ -2,48 +2,48 @@
 
 // TODO: Redo specs
 describe("List Controller", function() {
-	beforeEach(function() {
-		$.fx.off = true;
-	});
-	
-	xit("should be on reorder mode", function() {
-		var
-			element = $('<section><ul><li></li></ul></section>'),
-			listController = new ListController({element: element});
+  beforeEach(function() {
+    $.fx.off = true;
+  });
 
-		listController.reorder();
+  xit("should be on reorder mode", function() {
+    var
+    element = $('<section><ul><li></li></ul></section>'),
+    listController = new ListController({element: element});
 
-		expect(listController.el('li').height()).toBe(26);	
-	});
+    listController.reorder();
 
-	describe("clear", function() {
-		beforeEach(function() {
-			chrome = {
-				browserAction: jasmine.createSpyObj('browserAction', ['setBadgeText'])
-			};
-		});	
-			
-		xit("should clear the html", function() {
-			var table = $('<table></table>');
+    expect(listController.el('li').height()).toBe(26);
+  });
 
-			spyOn(listController, 'el').andReturn(table);
+  describe("clear", function() {
+    beforeEach(function() {
+      chrome = {
+        browserAction: jasmine.createSpyObj('browserAction', ['setBadgeText'])
+      };
+    });
 
-			listController._clear();
+    xit("should clear the html", function() {
+      var table = $('<table></table>');
 
-			expect(table.find('#no-projects').length).toBe(1);
-		});
+      spyOn(listController, 'el').andReturn(table);
 
-		xit("should remove badge", function() {
-			var table = $('<table></table>');
+      listController._clear();
 
-			spyOn(chrome.browserAction, 'setBadgeText'); 
-			spyOn(listController, 'el').andReturn(table);
+      expect(table.find('#no-projects').length).toBe(1);
+    });
 
-			listController._clear();
+    xit("should remove badge", function() {
+      var table = $('<table></table>');
 
-			expect(chrome.browserAction.setBadgeText).toHaveBeenCalled();
-			expect(chrome.browserAction.setBadgeText.calls[0].args[0]).toBeSameJsonAs({text: ''});
-		});
-	});
+      spyOn(chrome.browserAction, 'setBadgeText');
+      spyOn(listController, 'el').andReturn(table);
+
+      listController._clear();
+
+      expect(chrome.browserAction.setBadgeText).toHaveBeenCalled();
+      expect(chrome.browserAction.setBadgeText.calls[0].args[0]).toBeSameJsonAs({text: ''});
+    });
+  });
 });
 

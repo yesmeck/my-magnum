@@ -1,19 +1,19 @@
 /*globals JSONSource */
 
 var TravisAPISource = o.Class({
-	extend: JSONSource,
+  extend: JSONSource,
 
-	url: 'https://api.travis-ci.org/repos',
+  url: 'https://api.travis-ci.org/repos',
 
-	getURL: function (users) {
-		users = '?owner_name[]='+users.join('&owner_name[]=');
+  getURL: function (users) {
+    users = '?owner_name[]='+users.join('&owner_name[]=');
 
-		return this.url+users;
-	},
+    return this.url+users;
+  },
 
-	get: function (users, onComplete) {
-		this._super(this.getURL(users), onComplete);
-	}
+  get: function (users, onComplete) {
+    this._super(this.getURL(users), onComplete);
+  }
 });
 
 

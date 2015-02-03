@@ -1,42 +1,42 @@
 Handlebars.registerHelper('eachProperty', function(context, options) {
-	if (!$.isEmptyObject(context)) {
-		var ret = "";
+  if (!$.isEmptyObject(context)) {
+    var ret = "";
 
-		for (var prop in context) {
-			ret = ret + options.fn({property:prop,value:context[prop]});
-		}
+    for (var prop in context) {
+      ret = ret + options.fn({property:prop,value:context[prop]});
+    }
 
-		return ret;
-	} else {
-		return options.inverse(this);
-	}
+    return ret;
+  } else {
+    return options.inverse(this);
+  }
 });
 
 Handlebars.registerHelper('include', function(id, context) {
-	var source = $(id).html();
-	var template = Handlebars.compile(source);
-	
-	return template(context);
+  var source = $(id).html();
+  var template = Handlebars.compile(source);
+
+  return template(context);
 });
 
 Handlebars.registerHelper('urlTo', function(user, name) {
-	return 'https://travis-ci.org/'+user+'/'+name;
+  return 'https://travis-ci.org/'+user+'/'+name;
 });
 
 Handlebars.registerHelper('formatSecs', function(duration) {
-	if (duration) {
-		return formatSecs(duration);
-	}
+  if (duration) {
+    return formatSecs(duration);
+  }
 
-	return '-';
+  return '-';
 });
 
 Handlebars.registerHelper('moment', function(finishedAt) {
-	finishedAt = Handlebars.Utils.escapeExpression(finishedAt);
+  finishedAt = Handlebars.Utils.escapeExpression(finishedAt);
 
-	if (finishedAt) {
-		return moment(finishedAt).fromNow();
-	}
+  if (finishedAt) {
+    return moment(finishedAt).fromNow();
+  }
 
-	return 'running';
+  return 'running';
 });

@@ -1,177 +1,177 @@
 /*globals Notification */
 
 describe("Notification", function() {
-	var Notification;
-	
-	beforeEach(function() {
-		Notification = new NotificationController();
+  var Notification;
 
-		spyOn(Notification, '_showChromeNotification');
-	});
+  beforeEach(function() {
+    Notification = new NotificationController();
 
-	describe("setting", function() {
-		it("should notify when enabled", function() {
-			Prefs.set('notifications', true);
-			Projs.set([{status: 'passed'}]);
-			
-			Notification.update();
-			
-			Projs.set([{status: 'failed'}]);
+    spyOn(Notification, '_showChromeNotification');
+  });
 
-			Notification.update();
+  describe("setting", function() {
+    it("should notify when enabled", function() {
+      Prefs.set('notifications', true);
+      Projs.set([{status: 'passed'}]);
 
-			expect(Notification._showChromeNotification).toHaveBeenCalled();
-		});
+      Notification.update();
 
-		it("should not notify when disabled", function() {
-			Prefs.set('notifications', false);
-			Projs.set([{status: 'passed'}]);
-			
-			Notification.update();
-			
-			Projs.set([{status: 'failed'}]);
+      Projs.set([{status: 'failed'}]);
 
-			Notification.update();
+      Notification.update();
 
-			expect(Notification._showChromeNotification).not.toHaveBeenCalled();
-		});
-	});
+      expect(Notification._showChromeNotification).toHaveBeenCalled();
+    });
 
-	describe("notify", function() {
-		beforeEach(function() {
-			Prefs.set('notifications', true);
-			Status.set('stored', '');
-		});
-		
-		describe("does nothing", function() {
-			it("on first fetch", function() {
-				Projs.set([{status: 'failed'}]);
+    it("should not notify when disabled", function() {
+      Prefs.set('notifications', false);
+      Projs.set([{status: 'passed'}]);
 
-				Notification.update();
+      Notification.update();
 
-				expect(Notification._showChromeNotification).not.toHaveBeenCalled();
-			});
+      Projs.set([{status: 'failed'}]);
 
-			it("if projects status do not alter", function() {
-				Projs.set([{status: 'failed'}]);
+      Notification.update();
 
-				Notification.update();
+      expect(Notification._showChromeNotification).not.toHaveBeenCalled();
+    });
+  });
 
-				Projs.set([{status: 'failed'}]);
+  describe("notify", function() {
+    beforeEach(function() {
+      Prefs.set('notifications', true);
+      Status.set('stored', '');
+    });
 
-				Notification.update();
+    describe("does nothing", function() {
+      it("on first fetch", function() {
+        Projs.set([{status: 'failed'}]);
 
-				expect(Notification._showChromeNotification).not.toHaveBeenCalled();
-			});
+        Notification.update();
 
-			it("even if project status goes from failed to errored", function() {
-				Projs.set([{status: 'failed'}]);
+        expect(Notification._showChromeNotification).not.toHaveBeenCalled();
+      });
 
-				Notification.update();
+      it("if projects status do not alter", function() {
+        Projs.set([{status: 'failed'}]);
 
-				Projs.set([{status: 'errored'}]);
+        Notification.update();
 
-				Notification.update();
+        Projs.set([{status: 'failed'}]);
 
-				expect(Notification._showChromeNotification).not.toHaveBeenCalled();
-			});
+        Notification.update();
 
-			it("or vice-versa", function() {
-				Projs.set([{status: 'errored'}]);
+        expect(Notification._showChromeNotification).not.toHaveBeenCalled();
+      });
 
-				Notification.update();
+      it("even if project status goes from failed to errored", function() {
+        Projs.set([{status: 'failed'}]);
 
-				Projs.set([{status: 'failed'}]);
+        Notification.update();
 
-				Notification.update();
+        Projs.set([{status: 'errored'}]);
 
-				expect(Notification._showChromeNotification).not.toHaveBeenCalled();
-			});
-		});
+        Notification.update();
 
-		describe("shows fail", function() {
-			it("if a project goes from passed to failed", function() {
-				Projs.set([{status: 'passed'}]);
+        expect(Notification._showChromeNotification).not.toHaveBeenCalled();
+      });
 
-				Notification.update();
+      it("or vice-versa", function() {
+        Projs.set([{status: 'errored'}]);
 
-				Projs.set([{status: 'failed'}]);
+        Notification.update();
 
-				Notification.update();
+        Projs.set([{status: 'failed'}]);
 
-				expect(Notification._showChromeNotification).toHaveBeenCalledWith('failed');
-			});
+        Notification.update();
 
-			it("if a project goes from passed to errored", function() {
-				Projs.set([{status: 'passed'}]);
+        expect(Notification._showChromeNotification).not.toHaveBeenCalled();
+      });
+    });
 
-				Notification.update();
+    describe("shows fail", function() {
+      it("if a project goes from passed to failed", function() {
+        Projs.set([{status: 'passed'}]);
 
-				Projs.set([{status: 'errored'}]);
+        Notification.update();
 
-				Notification.update();
+        Projs.set([{status: 'failed'}]);
 
-				expect(Notification._showChromeNotification).toHaveBeenCalledWith('failed');
-			});
+        Notification.update();
 
-			it("if project was passing, runned and has failed", function() {
-				Projs.set([{status: 'passed'}]);
+        expect(Notification._showChromeNotification).toHaveBeenCalledWith('failed');
+      });
 
-				Notification.update();
+      it("if a project goes from passed to errored", function() {
+        Projs.set([{status: 'passed'}]);
 
-				Projs.set([{status: 'started'}]);
-				
-				Notification.update();
+        Notification.update();
 
-				Projs.set([{status: 'failed'}]);
+        Projs.set([{status: 'errored'}]);
 
-				Notification.update();
+        Notification.update();
 
-				expect(Notification._showChromeNotification).toHaveBeenCalledWith('failed');
-			});
-		});
-		
-		describe("shows passed", function() {
-			it("if a project goes from failed to passed", function() {
-				Projs.set([{status: 'failed'}]);
+        expect(Notification._showChromeNotification).toHaveBeenCalledWith('failed');
+      });
 
-				Notification.update();
+      it("if project was passing, runned and has failed", function() {
+        Projs.set([{status: 'passed'}]);
 
-				Projs.set([{status: 'passed'}]);
+        Notification.update();
 
-				Notification.update();
+        Projs.set([{status: 'started'}]);
 
-				expect(Notification._showChromeNotification).toHaveBeenCalledWith('passed');
-			});
-			
-			it("if a project goes from errored to passed", function() {
-				Projs.set([{status: 'errored'}]);
+        Notification.update();
 
-				Notification.update();
+        Projs.set([{status: 'failed'}]);
 
-				Projs.set([{status: 'passed'}]);
+        Notification.update();
 
-				Notification.update();
+        expect(Notification._showChromeNotification).toHaveBeenCalledWith('failed');
+      });
+    });
 
-				expect(Notification._showChromeNotification).toHaveBeenCalledWith('passed');
-			});
+    describe("shows passed", function() {
+      it("if a project goes from failed to passed", function() {
+        Projs.set([{status: 'failed'}]);
 
-			it("if project was failing, runned and has passed", function() {
-				Projs.set([{status: 'failed'}]);
+        Notification.update();
 
-				Notification.update();
-				
-				Projs.set([{status: 'started'}]);
+        Projs.set([{status: 'passed'}]);
 
-				Notification.update();
-				
-				Projs.set([{status: 'passed'}]);
+        Notification.update();
 
-				Notification.update();
+        expect(Notification._showChromeNotification).toHaveBeenCalledWith('passed');
+      });
 
-				expect(Notification._showChromeNotification).toHaveBeenCalledWith('passed');
-			});
-		});
-	});
+      it("if a project goes from errored to passed", function() {
+        Projs.set([{status: 'errored'}]);
+
+        Notification.update();
+
+        Projs.set([{status: 'passed'}]);
+
+        Notification.update();
+
+        expect(Notification._showChromeNotification).toHaveBeenCalledWith('passed');
+      });
+
+      it("if project was failing, runned and has passed", function() {
+        Projs.set([{status: 'failed'}]);
+
+        Notification.update();
+
+        Projs.set([{status: 'started'}]);
+
+        Notification.update();
+
+        Projs.set([{status: 'passed'}]);
+
+        Notification.update();
+
+        expect(Notification._showChromeNotification).toHaveBeenCalledWith('passed');
+      });
+    });
+  });
 });
 

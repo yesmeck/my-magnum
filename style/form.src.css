@@ -1,91 +1,91 @@
 section.form {
-	position:relative;
-	margin-top:-51px;
-	height:50px;
-	z-index:5;
+  position:relative;
+  margin-top:-51px;
+  height:50px;
+  z-index:5;
 }
 
 section.form form {
-	position:absolute;
-	top:9px;
-	left:0;
-	right:0;
-	padding:9px 15px;
-	border-bottom:1px solid #ddd;
-	background-color:#eee;
-	-webkit-transition:top .4s;
-	box-shadow:0 2px 8px #aaa;
-	z-index:1;
+  position:absolute;
+  top:9px;
+  left:0;
+  right:0;
+  padding:9px 15px;
+  border-bottom:1px solid #ddd;
+  background-color:#eee;
+  -webkit-transition:top .4s;
+  box-shadow:0 2px 8px #aaa;
+  z-index:1;
 }
 
 section.form button {
-	position: relative;
-	overflow: visible;
-	display: inline-block;
-	padding: 4px 10px;
-	border: 1px solid #d4d4d4;
-	margin: 0;
-	-webkit-border-radius: 4px;
-	border-radius: 4px;
-	background-color: #ececec;
-	background: -webkit-linear-gradient(#f4f4f4,#ececec);
-	background-clip: padding-box;
-	cursor: pointer;
-	outline: none;
-	text-decoration: none;
-	text-align: center;
-	font: 11px/normal sans-serif;
-	color: #666;
-	white-space: nowrap;
+  position: relative;
+  overflow: visible;
+  display: inline-block;
+  padding: 4px 10px;
+  border: 1px solid #d4d4d4;
+  margin: 0;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #ececec;
+  background: -webkit-linear-gradient(#f4f4f4,#ececec);
+  background-clip: padding-box;
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+  text-align: center;
+  font: 11px/normal sans-serif;
+  color: #666;
+  white-space: nowrap;
 }
 
 
 section.form button:hover,
 section.form button:focus,
 section.form button:active {
-	border-color: #2356c4;
-	border-bottom-color: #2a65a0;
-	background-color: #4a80f3;
-	background: -webkit-linear-gradient(#6699fa,#4a80f3);
-	text-decoration: none;
-	color: #fff;
+  border-color: #2356c4;
+  border-bottom-color: #2a65a0;
+  background-color: #4a80f3;
+  background: -webkit-linear-gradient(#6699fa,#4a80f3);
+  text-decoration: none;
+  color: #fff;
 }
 
 section.form button:active {
-	border-color: #2a65a0;
-	border-bottom-color: #2356c4;
-	background-color: #4a80f3;
-	background: -webkit-linear-gradient(#4a80f3,#6699fa);
+  border-color: #2a65a0;
+  border-bottom-color: #2356c4;
+  background-color: #4a80f3;
+  background: -webkit-linear-gradient(#4a80f3,#6699fa);
 }
 
 section.form input {
-	margin:0 10px 0 2px;
-	padding:1px 3px;
-	vertical-align:middle;
+  margin:0 10px 0 2px;
+  padding:1px 3px;
+  vertical-align:middle;
 }
 
 section.form input[name="interval"] {
-	width:40px;
+  width:40px;
 }
 
 section.form input[name="user"] {
-	width:120px;
+  width:120px;
 }
 
 section.form label {
-	font-weight:bold;
+  font-weight:bold;
 }
 
 section.form span.status {
-	margin-left:5px;
-	color:#0b0;
+  margin-left:5px;
+  color:#0b0;
 }
 
 section.form span.tip {
-	color:#999;
-	font-size:11px;
+  color:#999;
+  font-size:11px;
 }
 
 section.form form.opened {
-	top:51px;
+  top:51px;
 }
