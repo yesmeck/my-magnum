@@ -5,33 +5,6 @@
 <script src="/app/helper/utils.src.js"></script>
 <script src="/app/helper/handlebars.src.js"></script>
 
-<script id="users" type="text/x-handlebars-template">
-  {{#each users}}
-  <li user="{{user}}">
-    <table>
-      <tr>
-        <th colspan="5">
-          {{user}}
-          <img class="user-grip" src="/imgs/user-grip.png">
-          <span class="user-removal">
-            <button class="remove" title="remove user"></button>
-            {{{include "#confirm-dialog" this}}}
-          </span>
-        </th>
-      </tr>
-
-      {{#each projs}}
-        {{{include "#projects" this}}}
-      {{else}}
-        {{{include "#no-projects"}}}
-      {{/each}}
-    </table>
-  </li>
-  {{else}}
-    {{{include "#no-users"}}}
-  {{/each}}
-</script>
-
 <script id="no-users" type="text/x-handlebars-template">
   <li>
     <table>
@@ -53,12 +26,16 @@
 </script>
 
 <script id="projects" type="text/x-handlebars-template">
-  <tr href="{{{urlTo user name}}}" class="{{status}}">
-    <td class="col-name"><span tabindex="0">{{name}}</span></td>
-    <td class="col-build">#{{build}}</td>
-    <td class="col-duration">{{{formatSecs duration}}}</td>
-    <td class="col-finishedAt">{{{moment finishedAt}}}</td>
-  </tr>
+  {{#each projects}}
+  <li>
+    <tr href="#" class="{{buid_status}}">
+      <td class="col-name"><span tabindex="0">{{name}}</span></td>
+      <td class="col-build">#{{build_status}}</td>
+      <td class="col-duration">1</td>
+      <td class="col-finishedAt">{{{moment last_build_at}}}</td>
+    </tr>
+  </li>
+  {{/each}}
 </script>
 
 <script id="no-projects" type="text/x-handlebars-template">
@@ -69,12 +46,13 @@
 
 
 <script>
-var source = $("#users").html();
+var source = $("#projects").html();
 var template = Handlebars.compile(source);
 
 window.addEventListener('message', function (evt) {
+  console.log(evt)
   evt.source.postMessage({
-    html: template({users:evt.data.context})
+    html: template({projects: evt.data.context})
   }, evt.origin);
 });
 </script>

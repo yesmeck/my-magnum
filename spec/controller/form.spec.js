@@ -60,7 +60,7 @@ describe("Form User Controller", function () {
       form = new FormUsersController({element:element}),
       client = new LiteMQ.Client();
 
-      client.sub('form-users-submitted', function () {
+      client.sub('form-token-submitted', function () {
         expect(true).toBe(true);
       });
 

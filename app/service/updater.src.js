@@ -5,27 +5,27 @@ var UpdaterService = o.Class({
 
   exec: function (callback) {
     var that = this,
-    users = Prefs.getUsers();
+    tokens = Prefs.getTokens();
 
-    TravisAPI.get(users, function (projs) {
-      projs = Projs.convertAll(projs);
-
-      users.forEach(function (user) {
-        if (!projs[user]) {
-          projs[user] = [];
+    var fetchProject = function(tokens, projects) {
+      if (tokens.length > 0) {
+        token = tokens.shift();
+        MagnumAPI.project(token, function(project) {
+          projects.push(project)
+          fetchProject(tokens, projects)
+        })
+      } else {
+        console.log(projects)
+        Projs.set(projects)
+        console.log('Request done!');
+        that.client.pub('request-done');
+        if (callback) {
+          callback(projects);
         }
-      });
-
-      Projs.set(projs);
-
-      console.log('Request done!');
-
-      that.client.pub('request-done');
-
-      if (callback) {
-        callback(projs);
       }
-    });
+    };
+
+    fetchProject(tokens, []);
   },
 
   init: function () {
@@ -46,11 +46,10 @@ var UpdaterService = o.Class({
   },
 
   start: function () {
-    var
-    users = Prefs.getUsers(),
-    interval = parseInt(Prefs.get('intervalMin'), 10) || 1;
+    var tokens = Prefs.getTokens(),
+        interval = parseInt(Prefs.get('intervalMin'), 10) || 1;
 
-    if (users.length) {
+    if (tokens.length > 0) {
       this._createAlarm(interval);
     }
   },
@@ -74,7 +73,7 @@ var UpdaterService = o.Class({
 
       that.exec();
     })
-    .sub(['form-prefs-submitted', 'form-users-submitted'], function () {
+    .sub(['form-prefs-submitted', 'form-token-submitted'], function () {
       that.restart();
       this.pub('form-submit-done');
     });
@@ -84,7 +83,7 @@ var UpdaterService = o.Class({
     var that = this;
 
     chrome.alarms.onAlarm.addListener(function (alarm) {
-      if (alarm && alarm.name === 'travisapi') {
+      if (alarm && alarm.name === 'magumapi') {
         console.log(new Date());
         console.log('Requesting...');
 
@@ -95,12 +94,12 @@ var UpdaterService = o.Class({
 
   _clearAlarm: function () {
     console.log('Updater stopped.');
-    chrome.alarms.clear('travisapi');
+    chrome.alarms.clear('magumapi');
   },
 
   _createAlarm: function (interval) {
     console.log('Updater started. Polling interval: '+interval+'min');
-    chrome.alarms.create('travisapi', {periodInMinutes:interval});
+    chrome.alarms.create('magumapi', {periodInMinutes:interval});
   }
 });
 

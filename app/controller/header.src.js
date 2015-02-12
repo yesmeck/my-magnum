@@ -21,16 +21,16 @@ var HeaderController = o.Class({
     .sub('form-prefs-submitted', function () {
       that.el('button#open-prefs').focus();
     })
-    .sub('form-users-submitted', function () {
-      that.el('button#open-users').focus();
+    .sub('form-token-submitted', function () {
+      that.el('button#open-projects').focus();
     });
   },
 
   _addListeners: function () {
     var that = this;
 
-    this.el().on('click', 'button#open-users', function () {
-      that.client.pub('button-open-users-pressed');
+    this.el().on('click', 'button#open-projects', function () {
+      that.client.pub('button-open-projects-pressed');
     })
     .on('click', 'button#open-prefs', function () {
       that.client.pub('button-open-prefs-pressed');

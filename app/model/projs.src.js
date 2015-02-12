@@ -41,8 +41,8 @@ var ProjsModel = o.Class({
     return this._super() || [];
   },
 
-  getFromUser: function (user) {
-    var projs = this.get();
+  getFromToken: function (token) {
+    var proj = this.get();
 
     return projs.filter(function (proj) {
       return (proj.user===user);

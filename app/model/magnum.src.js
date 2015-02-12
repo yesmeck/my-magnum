@@ -4,12 +4,12 @@ var MagnumAPISource = o.Class({
   endpoint: 'https://magnum-ci.com/api/v1',
 
   get: function (path, token, onComplete) {
-    url = this.endpoint + path + '?api_key=' + token;
+    url = this.endpoint + path + '?token=' + token;
     this._super(url, onComplete);
   },
 
-  profile: function (token, onComplete) {
-    this.get('/profile', token, onComplete)
+  project: function (token, onComplete) {
+    this.get('/project', token, onComplete)
   }
 })
 

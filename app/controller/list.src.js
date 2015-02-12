@@ -11,9 +11,9 @@ var ListController = o.Class({
   },
 
   render: function () {
-    var users = Prefs.getUsers();
+    var tokens = Prefs.getTokens();
 
-    if (users.length===0) {
+    if (tokens.length === 0) {
       this.client.pub('project-list-cleared');
     }
 
@@ -33,7 +33,7 @@ var ListController = o.Class({
       that.render();
       that._addListeners();
     })
-    .sub('form-users-submitted', function () {
+    .sub('form-token-submitted', function () {
       that._lock();
     })
     .sub('request-done', function () {
@@ -174,19 +174,10 @@ var ListController = o.Class({
   },
 
   _requestTemplate: function () {
-    var
-    ordered = [],
-    users = Prefs.getUsers(),
-    projs = Projs.get(),
-    iwindow = $('iframe#templates').get(0).contentWindow;
+    var projects = Projs.get(),
+        iwindow = $('iframe#templates').get(0).contentWindow;
 
-    users.forEach(function (user) {
-      var projs = Projs.getFromUser(user);
-
-      ordered.push({user:user, projs:projs});
-    });
-
-    iwindow.postMessage({context: ordered}, '*');
+    iwindow.postMessage({context: projects}, '*');
   },
 
   _showDialog: function (button) {

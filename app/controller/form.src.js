@@ -45,7 +45,7 @@ var FormController = o.Class({
 
 var FormUsersController = o.Class({
   extend: FormController,
-  dom: 'section#form-user',
+  dom: 'section#form-token',
 
   close: function () {
     this._enableInputs();
@@ -67,7 +67,7 @@ var FormUsersController = o.Class({
       that._addListeners();
       that._disableFieldsTabIndex();
     })
-    .sub('button-open-users-pressed', function () {
+    .sub('button-open-projects-pressed', function () {
       that.toggle();
     })
     .sub('button-open-prefs-pressed', function () {
@@ -92,15 +92,12 @@ var FormUsersController = o.Class({
     var that = this;
 
     this.el('form').on('submit', function (evt) {
-      var api_key = this.user.value
+      var token = this.token.value
 
-      MagnumAPI.profile(api_key, function(user) {
-        console.log(user)
-        Prefs.addUser(user);
-      })
+      Prefs.addToken(token);
 
       that._lock();
-      that.client.pub('form-users-submitted');
+      that.client.pub('form-token-submitted');
 
       evt.preventDefault();
     });
@@ -151,7 +148,7 @@ var FormPrefsController = o.Class({
       that._disableFieldsTabIndex();
       that._restoreData();
     })
-    .sub('button-open-users-pressed', function () {
+    .sub('button-open-projects-pressed', function () {
       that.close();
     })
     .sub('button-open-prefs-pressed', function () {

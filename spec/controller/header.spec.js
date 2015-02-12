@@ -8,7 +8,7 @@ describe("Header Controller", function() {
     client = new LiteMQ.Client();
 
     client.count = 0;
-    client.sub('button-open-users-pressed', function () {
+    client.sub('button-open-projects-pressed', function () {
       this.count++;
     });
 

@@ -4,19 +4,19 @@ var PrefsModel = o.Class({
   extend: ModelLocalStorage,
   key: 'prefs',
 
-  addUser: function (user) {
-    var users = this.get('users');
+  addToken: function (token) {
+    var tokens = this.get('tokens');
 
-    users = users || [];
+		tokens = tokens || []
 
-    if (users.indexOf(user) > -1) {
-      return;
-    }
+		if (tokens.indexOf(token) > -1) {
+			return;
+		}
 
-    // Add to the front
-    users.unshift(user);
+		// Add to the front
+		tokens.unshift(token.trim());
 
-    this.set('users', users);
+		this.set('tokens', tokens);
   },
 
   get: function (key) {
@@ -25,10 +25,10 @@ var PrefsModel = o.Class({
     return key? prefs[key]: prefs;
   },
 
-  getUsers: function () {
-    var users = this.get('users');
+  getTokens: function () {
+    var tokens = this.get('tokens');
 
-    return [];
+    return tokens || [];
   },
 
   removeUser: function (user) {
