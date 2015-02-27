@@ -16,5 +16,3 @@
 * Polling interval configurable
 * Badge alert
 
-
-
